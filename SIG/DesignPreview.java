@@ -9,10 +9,7 @@ package View;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author FUE
- */
+
 public class DesignPreview extends javax.swing.JFrame {
 
     /**
