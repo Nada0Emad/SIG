@@ -7,6 +7,9 @@
 package View;
 
 import Model.FileOperations;
+import Model.InvoiceLine;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -325,6 +328,8 @@ public class DesignPreview extends javax.swing.JFrame {
         reader1.readCSVFile("src\\Files\\InvoiceHeader.csv", tblModel);
         
 //        FileOperations reader2 = new FileOperations();
+//        //int row = jTable1.getSelectedRow();
+//        String value = jTable1.getValueAt(0, 1).toString();
 //        reader2.readCSVFile("src\\Files\\InvoiceLine.csv", tblModel2);
 
         
