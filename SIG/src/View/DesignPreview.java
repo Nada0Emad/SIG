@@ -6,18 +6,25 @@
 
 package View;
 
+import Model.FileOperations;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author FUE
- */
 public class DesignPreview extends javax.swing.JFrame {
 
     /**
      * Creates new form DesignPreview
      */
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/YY");
+    Date date = new Date();
+    
     public DesignPreview() {
         initComponents();
     }
@@ -64,10 +71,7 @@ public class DesignPreview extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "No.", "Date", "Customer", "Total"
@@ -211,6 +215,11 @@ public class DesignPreview extends javax.swing.JFrame {
         );
 
         CancelBtn.setText("Cancel");
+        CancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelBtnActionPerformed(evt);
+            }
+        });
 
         SaveBtn.setText("Save");
         SaveBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -296,6 +305,11 @@ public class DesignPreview extends javax.swing.JFrame {
         FileTab.add(LoadFile);
 
         SaveFile.setText("Save File");
+        SaveFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveFileActionPerformed(evt);
+            }
+        });
         FileTab.add(SaveFile);
 
         jMenuBar1.add(FileTab);
@@ -306,11 +320,22 @@ public class DesignPreview extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadFileActionPerformed
-        // TODO add your handling code here:
+        
+        DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
+//        DefaultTableModel tblModel2 = (DefaultTableModel) jTable2.getModel();
+
+        FileOperations reader1 = new FileOperations();
+        reader1.readCSVFile("src\\Files\\InvoiceHeader.csv", tblModel);
+        
+//        FileOperations reader2 = new FileOperations();
+//        reader2.readCSVFile("src\\Files\\InvoiceLine.csv", tblModel2);
+
+        
     }//GEN-LAST:event_LoadFileActionPerformed
 
     private void CreateNewInvoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewInvoiceBtnActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.addRow(new Object[model.getColumnCount()]);
     }//GEN-LAST:event_CreateNewInvoiceBtnActionPerformed
 
     private void DeleteInvoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteInvoiceBtnActionPerformed
@@ -332,8 +357,50 @@ public class DesignPreview extends javax.swing.JFrame {
     }//GEN-LAST:event_DeleteInvoiceBtnActionPerformed
 
     private void SaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveBtnActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+    int selectedOption = fileChooser.showSaveDialog(this);
+    if(selectedOption == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        try {
+            FileWriter fw = new FileWriter(fileToSave);
+            for(int i = 0; i < jTable1.getRowCount(); i++) {
+                for(int j = 0; j < jTable1.getColumnCount(); j++) {
+                    fw.write(jTable1.getValueAt(i, j).toString() + ",");
+                }
+                fw.write("\n"); // write a new line separator after each row
+            }
+            fw.close();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     }//GEN-LAST:event_SaveBtnActionPerformed
+
+    private void SaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFileActionPerformed
+    JFileChooser fileChooser = new JFileChooser();
+    int selectedOption = fileChooser.showSaveDialog(this);
+    if(selectedOption == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        try {
+            FileWriter fw = new FileWriter(fileToSave);
+            for(int i = 0; i < jTable1.getRowCount(); i++) {
+                for(int j = 0; j < jTable1.getColumnCount(); j++) {
+                    fw.write(jTable1.getValueAt(i, j).toString() + ",");
+                }
+                fw.write("\n"); // write a new line separator after each row
+            }
+            fw.close();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    }//GEN-LAST:event_SaveFileActionPerformed
+
+    private void CancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBtnActionPerformed
+        dispose();
+     }//GEN-LAST:event_CancelBtnActionPerformed
 
     /**
      * @param args the command line arguments
